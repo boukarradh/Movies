@@ -1,0 +1,128 @@
+# Fichier: gradle/libs.versions.toml
+
+[versions]
+# Plugins Gradle
+agp = "8.9.0" # Plugin Android Gradle
+kotlin = "2.1.10" # Plugin Kotlin
+kotlin-compose = "2.0.21" # Plugin Kotlin Compose Compiler
+ksp = "2.1.10-1.0.31"
+hilt = "2.56" # Hilt (Injection de dépendances)
+hiltExt = "1.2.0"
+
+# AndroidX & Core
+coreKtx = "1.15.0"
+lifecycleRuntimeKtx = "2.8.7" # Lifecycle (ViewModel, etc.)
+activityCompose = "1.10.1"
+
+# Compose
+composeBom = "2024.09.00" # Bill of Materials pour Compose
+navigationCompose = "2.7.3" # Navigation Compose
+lifecycleViewModelCompose = "2.8.7" # Intégration ViewModel avec Compose
+
+# Réseau
+retrofit = "2.11.0" # Client HTTP pour les API REST
+okhttp = "4.12.0" # Utilisé par Retrofit pour les requêtes HTTP
+
+# Base de données & Préférences
+room = "2.6.1" # ORM pour base de données locale (cache, favoris, user)
+datastore = "1.1.1" # Stockage clé-valeur asynchrone (état de connexion)
+
+# Coroutines
+coroutines = "1.8.1" # Gestion de l'asynchronisme
+
+# Chargement d'Images
+coil = "2.7.0" # Chargement d'images depuis une URL
+
+# Tests (versions de base)
+junit = "4.13.2"
+junitVersion = "1.2.1"
+espressoCore = "3.5.1"
+
+
+
+
+[libraries]
+# --- Core AndroidX & Kotlin ---
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk8", version.ref = "kotlin" } # Standard Library Kotlin
+
+# --- Cycle de vie (Lifecycle) ---
+# Nécessaire pour les ViewModels, observer le cycle de vie, etc.
+androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
+androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleRuntimeKtx" } # Pour les ViewModels
+androidx-lifecycle-viewmodel-compose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycleViewModelCompose" } # Helper pour utiliser les ViewModels dans Compose
+androidx-lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycleRuntimeKtx" } # Pour collectAsStateWithLifecycle
+
+# --- Jetpack Compose ---
+# Bill of Materials (BOM) : Gère les versions des différentes libs Compose pour la compatibilité
+androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+# Modules Compose fondamentaux (requis)
+androidx-ui = { group = "androidx.compose.ui", name = "ui" }
+androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" } # Pour les @Preview dans Android Studio
+androidx-material3 = { group = "androidx.compose.material3", name = "material3" } # Composants Material Design 3
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" } # Intégration de Compose dans les Activities
+# Navigation Compose
+androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
+# Icônes Material (si utilisées pour la Bottom Nav Bar par exemple)
+androidx-material-icons-core = { group = "androidx.compose.material", name = "material-icons-core" } # Optionnel: dépendances de base
+androidx-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" } # Optionnel: collection étendue d'icônes
+
+# --- Coroutines ---
+# Pour gérer les tâches asynchrones (appels réseau, accès DB)
+kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
+kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" } # Intégration spécifique à Android
+
+# --- Réseau (Retrofit) ---
+# Pour communiquer avec l'API TheMovieDB
+retrofit-core = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+retrofit-converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" } # Convertisseur JSON (ou utiliser Moshi)
+# OkHttp (client HTTP sous-jacent à Retrofit) et Logging Interceptor (pour voir les requêtes/réponses dans Logcat)
+okhttp-core = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
+okhttp-logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
+
+# --- Base de données (Room) ---
+# Pour le cache local et la persistance des données utilisateur/favoris
+androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" } # Extensions Kotlin (coroutines support)
+androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" } # Annotation processor (nécessite KSP)
+
+# --- Préférences (DataStore) ---
+# Pour stocker des données simples (ex: état de connexion) de manière asynchrone
+androidx-datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
+
+# --- Chargement d'Images (Coil) ---
+# Pour charger et afficher les affiches de films depuis les URLs
+coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
+
+# --- Injection de Dépendances (Hilt) - Optionnel mais recommandé ---
+# Simplifie la fourniture des dépendances (ViewModel, Repository, Retrofit instance, Room DB...)
+hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
+hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" } # Annotation processor (nécessite KSP)
+# Pour l'intégration avec Navigation Compose (si vous injectez des ViewModels dans les écrans de navigation)
+androidx-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltExt" } # Utiliser une version stable appropriée
+hilt-ext-compiler = { group = "androidx.hilt", name = "hilt-compiler", version.ref = "hiltExt" }
+
+# --- Tests ---
+# Dépendances de base pour les tests unitaires et instrumentalisés
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+# Tests pour Compose UI
+androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" } # Utilise la BOM pour la version
+androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" } # Pour le débogage des previews et tests
+androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" } # Utilise la BOM pour la version
+
+
+[plugins]
+# --- Plugins Gradle ---
+android-application = { id = "com.android.application", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin-compose" }
+# KSP (Kotlin Symbol Processing) - Nécessaire pour Room et Hilt
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+# Hilt - Nécessaire si vous utilisez Hilt pour l'injection de dépendances
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+# Kotlin Parcelize (peut être utile si vous passez des objets complexes via la navigation, bien que non recommandé)
+# kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
+
