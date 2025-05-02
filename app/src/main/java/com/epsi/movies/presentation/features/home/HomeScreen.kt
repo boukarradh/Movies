@@ -20,31 +20,67 @@ import com.epsi.movies.presentation.features.home.viewModel.MoviesViewModel
 import com.epsi.movies.presentation.ui.designsystem.MovieCard
 
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier, navController: NavHostController, onMovieClick: (String) -> Unit,moviesViewModel: MoviesViewModel = hiltViewModel()) {
-    val moviesState  = moviesViewModel.moviesUiState.collectAsStateWithLifecycle().value
+fun HomeScreen(
+    modifier: Modifier = Modifier,
+    navController: NavHostController,
+    onMovieClick: (String) -> Unit,
+    moviesViewModel: MoviesViewModel = hiltViewModel()
+) {
+    val moviesState = moviesViewModel.moviesUiState.collectAsStateWithLifecycle().value
     when (moviesState) {
         is MoviesListUiState.Loading -> {
-            Box(modifier = Modifier.fillMaxSize()){
+            Box(modifier = Modifier.fillMaxSize()) {
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
             }
         }
+
         is MoviesListUiState.Success -> {
             MoviesListLayout(
                 moviesList = moviesState.movies,
+                onMovieClick = onMovieClick,
                 onFavoriteClick = { movieId ->
                     moviesViewModel.addMovieToFavorites(movieId)
-                }
-            )
+                })
         }
+
         is MoviesListUiState.Error -> {
-            Box(modifier = Modifier.fillMaxSize()){
-                Text(text = moviesState.message)
+            Box(modifier = Modifier.fillMaxSize()) {
+                Text(modifier = Modifier.align(Alignment.Center), text = moviesState.message)
             }
         }
     }
 }
 
 @Composable
-fun MoviesListLayout(moviesList: List<MovieUiModel>,onFavoriteClick: (Int) -> Unit){
+fun MoviesListLayout(
+    moviesList: List<MovieUiModel>, onMovieClick: (String) -> Unit, onFavoriteClick: (Int) -> Unit
+) {
 
+    // LazyColumn est l'équivalent Compose de RecyclerView, optimisé pour afficher
+    // de longues listes sans consommer trop de mémoire.
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(), // Prend tout l'espace disponible
+        contentPadding = PaddingValues(vertical = 8.dp) // Ajoute un peu d'espace en haut et en bas de la liste
+    ) {
+        // 'items' est une fonction d'extension pour LazyListScope (le contexte de LazyColumn)
+        // qui permet de créer un item pour chaque élément dans une liste.
+        // 'state.movies' est la List<MovieUiModel> provenant de votre état UI.
+        items(items = moviesList) { movie -> // Ce lambda est appelé pour chaque 'movie' dans la liste 'state.movies'
+
+            MovieCard(
+                movieId = movie.id,
+                title = movie.title,
+                posterUrl = movie.posterUrl, // Utilise l'URL déjà construite dans MovieUiModel
+                releaseDateFormatted = movie.releaseDateFormatted, // Utilise la date formatée
+                voteAverageFormatted = movie.voteAverageFormatted, // Utilise la note formatée
+                isFavorite = movie.isFavorite,
+                onCardClick = { movieId ->
+                    onMovieClick(movieId.toString())
+
+                },
+                onFavoriteClick = { movieId ->
+                    onFavoriteClick(movieId)
+                })
+        }
+    }
 }
