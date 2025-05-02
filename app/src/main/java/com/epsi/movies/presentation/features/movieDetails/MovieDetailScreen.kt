@@ -1,4 +1,4 @@
-package com.epsi.movies.presentation.features.home
+package com.epsi.movies.presentation.features.movieDetails
 
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text

@@ -24,5 +24,6 @@ data class MovieUiModel(
     val backdropUrl: String?, // URL complète du backdrop
     val releaseDateFormatted: String, // Date formatée
     val voteAverageFormatted: String, // Note formatée
-    val cacheAgeDescription: String // Description de l'âge du cache
+    val cacheAgeDescription: String,// Description de l'âge du cache
+    val isFavorite: Boolean = false,
 )

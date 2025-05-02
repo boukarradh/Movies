@@ -9,7 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.epsi.movies.navigation.routes.Screen
 import com.epsi.movies.presentation.MainAppScreen
-import com.epsi.movies.presentation.features.home.MovieDetailScreen
+import com.epsi.movies.presentation.features.movieDetails.MovieDetailScreen
 import com.epsi.movies.presentation.features.login.LoginScreen
 import com.epsi.movies.presentation.features.register.RegistrationScreen
 
