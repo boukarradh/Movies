@@ -59,7 +59,7 @@ fun AppNavigation(
             RegistrationScreen(
                 // Passe une fonction lambda pour naviguer vers MainApp en cas de succès
                 onRegisterSuccess = {
-                    navController.navigate(Screen.MainApp.route) {
+                    navController.navigate(Screen.Login.route) {
                         // Supprime RegisterScreen de la pile arrière
                         popUpTo(Screen.Register.route) { inclusive = true }
                         launchSingleTop = true
