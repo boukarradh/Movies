@@ -52,15 +52,16 @@ import com.epsi.movies.presentation.ui.theme.MoviesTheme
  */
 @Composable
 fun MovieCard(
+    modifier: Modifier = Modifier,
     movieId: Int,
     title: String,
     posterUrl: String?,
     releaseDateFormatted: String,
     voteAverageFormatted: String,
-    isFavorite: Boolean, //  paramètre pour l'état de favori
+    isFavorite: Boolean = false,//  flag pour l'état de favori
+    displayFavorite: Boolean = true,
     onCardClick: (Int) -> Unit,
     onFavoriteClick: (Int) -> Unit, //  lambda pour le clic sur l'étoile
-    modifier: Modifier = Modifier
 ) {
     Card(
         modifier = modifier
@@ -114,17 +115,18 @@ fun MovieCard(
                     fontWeight = FontWeight.SemiBold
                 )
             }
-
-            // --- Icône Favori (Droite) ---
-            IconButton(
-                onClick = { onFavoriteClick(movieId) }, // Appelle le lambda spécifique au clic sur l'étoile
-                modifier = Modifier.align(Alignment.Top) // Aligne l'icône en haut de la Row
-            ) {
-                Icon(
-                    imageVector = if (isFavorite) Icons.Filled.Favorite else Icons.Outlined.Favorite,
-                    contentDescription = if (isFavorite) "Retirer des favoris" else "Ajouter aux favoris",
-                    tint = if (isFavorite) Color.Yellow else Color.Gray // Couleur jaune si favori, gris sinon
-                )
+            if (displayFavorite) {
+                // --- Icône Favori (Droite) ---
+                IconButton(
+                    onClick = { onFavoriteClick(movieId) }, // Appelle le lambda spécifique au clic sur l'étoile
+                    modifier = Modifier.align(Alignment.Top)
+                ) {
+                    Icon(
+                        imageVector = if (isFavorite) Icons.Filled.Favorite else Icons.Outlined.Favorite,
+                        contentDescription = if (isFavorite) "Retirer des favoris" else "Ajouter aux favoris",
+                        tint = if (isFavorite) Color.Yellow else Color.Gray // Couleur jaune si favori, gris sinon
+                    )
+                }
             }
         }
     }

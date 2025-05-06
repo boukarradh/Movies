@@ -27,7 +27,7 @@ import kotlinx.coroutines.withContext
  * @param apiService L'instance du service API TMDB.
  */
 class MovieRepositoryImpl(
-    private val localDataSource :MovieDao,
+    private val localDataSource: MovieDao,
     private val apiService: MoviesApiService = NetworkModule.moviesApiService
 ) : MovieRepository {
 
@@ -74,20 +74,21 @@ class MovieRepositoryImpl(
     /**
      * Recherche des films via l'API TMDB.
      */
-    override suspend fun searchMovies(query: String, page: Int): MovieListResponseNetwork? {
+    override suspend fun searchMovies(query: String, page: Int): List<MovieUiModel> {
         // Assure que la requête n'est pas vide
         if (query.isBlank()) {
-            return null // Ou retourner une liste vide encapsulée si préféré
+            return emptyList() // Ou retourner une liste vide encapsulée si préféré
         }
         return withContext(Dispatchers.IO) {
             try {
-                apiService.searchMovies(query = query, page = page)
+                apiService.searchMovies(query = query, page = page).results.toEntityList()
+                    .map { it.toUiModel() }
             } catch (e: IOException) {
                 println("Erreur réseau lors de la recherche de films: ${e.message}")
-                null
+                emptyList()
             } catch (e: Exception) {
                 println("Erreur lors de la recherche de films: ${e.message}")
-                null
+                emptyList()
             }
         }
     }
@@ -101,7 +102,8 @@ class MovieRepositoryImpl(
             try {
                 Log.d(LOG_TAG, "Appel API pour les détails du film $movieId...")
                 // 1. Appel API (Assurez-vous que apiService.getMovieDetails retourne MovieDetailsResponse?)
-                val networkResponse: MovieDetailsResponseNetwork? = apiService.getMovieDetails(movieId = movieId)
+                val networkResponse: MovieDetailsResponseNetwork? =
+                    apiService.getMovieDetails(movieId = movieId)
                 Log.d(LOG_TAG, "Réponse API reçue pour les détails du film $movieId.")
 
                 // 2. Convertir la réponse réseau en modèle UI si elle n'est pas nulle
@@ -109,10 +111,16 @@ class MovieRepositoryImpl(
                 networkResponse?.toUiModel() // Retourne le MovieUiModel?
 
             } catch (e: IOException) {
-                Log.e(LOG_TAG,"Erreur réseau lors de la récupération des détails du film $movieId: ${e.message}")
+                Log.e(
+                    LOG_TAG,
+                    "Erreur réseau lors de la récupération des détails du film $movieId: ${e.message}"
+                )
                 null // Retourne null en cas d'erreur réseau
             } catch (e: Exception) {
-                Log.e(LOG_TAG,"Erreur lors de la récupération des détails du film $movieId: ${e.message}")
+                Log.e(
+                    LOG_TAG,
+                    "Erreur lors de la récupération des détails du film $movieId: ${e.message}"
+                )
                 null // Retourne null en cas d'autre erreur
             }
         }
@@ -131,7 +139,8 @@ class MovieRepositoryImpl(
      * @return Un Flow qui émet une liste de MovieUiModel chaque fois que les données
      * sous-jacentes dans la base de données changent.
      */
-    override fun getMovies(): Flow<List<MovieUiModel>> = // Définit la fonction qui retourne un Flow de List<MovieUiModel>
+    override fun getMovies(): Flow<List<MovieUiModel>> =
+    // Définit la fonction qui retourne un Flow de List<MovieUiModel>
     // 1. Appelle la fonction du DAO (localDataSource) qui retourne un Flow<List<MovieEntity>>.
         //    Ce Flow émettra une nouvelle liste d'entités chaque fois que la table "movies" change.
         localDataSource.getAllMovies()
