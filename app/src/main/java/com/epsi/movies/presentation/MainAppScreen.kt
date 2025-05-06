@@ -54,7 +54,6 @@ fun MainAppScreen(rootNavController: NavHostController) {
                     // Destination : Écran de Recherche
                     composable(Screen.Search.route) {
                          SearchMovieScreen(
-                              navController = rootNavController,
                               onMovieClick = { movieId ->
                                    rootNavController.navigate(Screen.MovieDetail.withArgs(movieId))
                               }

@@ -23,7 +23,7 @@ interface MovieRepository {
      * @param page La page à récupérer.
      * @return La réponse contenant la liste des films trouvés ou null en cas d'erreur.
      */
-    suspend fun searchMovies(query: String, page: Int = 1): MovieListResponseNetwork?
+    suspend fun searchMovies(query: String, page: Int = 1): List<MovieUiModel>
 
     /**
      * Récupère les détails d'un film spécifique.
