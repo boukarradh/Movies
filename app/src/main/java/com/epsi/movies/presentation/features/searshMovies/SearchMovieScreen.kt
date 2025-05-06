@@ -134,26 +134,7 @@ fun SearchMovieScreen(
                         modifier = Modifier.fillMaxSize(),
                         contentPadding = PaddingValues(vertical = 4.dp)
                     ) {
-                        items(
-                            items = state.movies,
-                            key = { movie -> movie.id }
-                        ) { movie ->
-                            MovieCard(
-                                movieId = movie.id,
-                                title = movie.title,
-                                posterUrl = movie.posterUrl,
-                                releaseDateFormatted = movie.releaseDateFormatted,
-                                voteAverageFormatted = movie.voteAverageFormatted,
-                                displayFavorite = false,
-                                onCardClick = { movieIdValue ->
-                                    // Utilise le lambda passé en paramètre
-                                    onMovieClick(movieIdValue.toString())
-                                },
-                                onFavoriteClick = { movieIdValue ->
-                             viewModel.addMovieToFavorites(movieIdValue)
-                                }
-                            )
-                        }
+                        //to add here
                     }
                 }
             }

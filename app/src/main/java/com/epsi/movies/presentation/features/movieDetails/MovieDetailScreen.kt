@@ -103,16 +103,5 @@ fun MovieDetailScreen(
 fun MovieDetailsLayout(moviesDetails: MovieDetailsUiModel) {
     // Appelle le composant d'affichage principal en lui passant
     // les propriétés extraites de l'objet moviesDetails.
-    MovieDetailContent(
-        title = moviesDetails.title,
-        overview = moviesDetails.overview ?: "", // Utilise l'overview du modèle UI
-        posterUrl = moviesDetails.posterUrl, // Utilise l'URL formatée
-        backdropUrl = moviesDetails.backdropUrl, // Utilise l'URL formatée
-        releaseDateFormatted = moviesDetails.releaseDateFormatted, // Utilise la date formatée
-        voteAverageFormatted = moviesDetails.voteAverageFormatted, // Utilise la note formatée
-        voteCount = moviesDetails.voteCount, // Utilise le nombre de votes brut
-        runtimeFormatted = moviesDetails.runtimeFormatted, // Utilise la durée formatée
-        genres = moviesDetails.genres, // Utilise la chaîne des genres formatée
-        tagline = moviesDetails.tagline, // Utilise le tagline
-    )
+        // to add here
 }
