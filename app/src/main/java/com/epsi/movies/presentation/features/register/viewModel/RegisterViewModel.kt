@@ -37,7 +37,7 @@ class RegisterViewModel @Inject constructor(
      * @param userName Le nom d'utilisateur saisi par l'utilisateur.
      * @param password Le mot de passe saisi par l'utilisateur.
      */
-    fun saveUser(userName: String, password: String) {
+    fun saveUser(userName: String, password: String, onRegisterSuccess: () -> Unit = {}) {
         // Lance une nouvelle coroutine dans le scope lié au cycle de vie de ce ViewModel.
         // Les opérations lancées ici seront automatiquement annulées si le ViewModel est détruit.
         // Il est généralement préférable que ce soit
@@ -46,7 +46,9 @@ class RegisterViewModel @Inject constructor(
             try {
                 // Appelle la fonction suspendue registerUser du repository.
                 // Cette fonction (dans notre implémentation) retourne l'ID ou lève une exception.
-                userRepository.registerUser(userName, password)
+                val result = userRepository.registerUser(userName, password)
+                if (result > 0)
+                    onRegisterSuccess()
                 // Aucune gestion du succès ici dans cette version simple.
                 // On pourrait logger un succès si besoin : Log.d("RegisterViewModel", "Enregistrement réussi pour $userName")
             } catch (e: Exception) {

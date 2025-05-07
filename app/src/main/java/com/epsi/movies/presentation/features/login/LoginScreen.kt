@@ -13,6 +13,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -32,6 +33,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.epsi.movies.R
 import com.epsi.movies.presentation.features.login.viewModel.LoginViewModel
 import com.epsi.movies.presentation.ui.designsystem.CustomElevatedButton
+import com.epsi.movies.presentation.ui.designsystem.MoviesAlertDialog
 import com.epsi.movies.presentation.ui.designsystem.PasswordOutlinedTextField
 
 @Composable
@@ -44,9 +46,26 @@ fun LoginScreen(
 
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var displayPopup: Boolean by remember { mutableStateOf(false) }
 
 
-    val focusManager = LocalFocusManager.current
+    when (displayPopup) {
+        true -> {
+            MoviesAlertDialog(
+                title = "Erreur de connexion",
+                onConfirm = {
+                    username = ""
+                    password = ""
+                },
+                onDismiss = {
+                    username = ""
+                    password = ""
+                })
+        }
+
+        false -> {}
+    }
+
 
     Column(
         modifier = Modifier
@@ -123,8 +142,7 @@ fun LoginScreen(
                         if (userExist) {
                             onLoginSuccess()
                         } else {
-                            username = ""
-                            password = ""
+                            displayPopup = true
                         }
                     }
                 )
@@ -132,6 +150,16 @@ fun LoginScreen(
             enabled = (username.isNotBlank() && password.isNotBlank()),
             text = "Login"
         )
+
+        TextButton(onClick = { onNavigateToRegister() }) {
+            Text(
+                text = "Créer un compte",
+                style = MaterialTheme.typography.bodyMedium,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(horizontal = 16.dp)
+            )
+        }
+
 
 
         Spacer(modifier = Modifier.height(24.dp))

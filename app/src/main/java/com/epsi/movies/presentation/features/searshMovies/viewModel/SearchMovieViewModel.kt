@@ -20,7 +20,7 @@ class SearchMovieViewModel @Inject constructor(
 
 ) : ViewModel() {
 
-    private val _searchResults = MutableStateFlow<SearchMovieUiState>(SearchMovieUiState.Loading)
+    private val _searchResults = MutableStateFlow<SearchMovieUiState>(SearchMovieUiState.Nothing)
     val searchResults: StateFlow<SearchMovieUiState> = _searchResults.asStateFlow()
 
     fun searchMovies(query: String) {
@@ -50,6 +50,6 @@ class SearchMovieViewModel @Inject constructor(
     }
 
     fun resetSearchState(){
-        _searchResults.value = SearchMovieUiState.Empty
+        _searchResults.value = SearchMovieUiState.Nothing
     }
 }

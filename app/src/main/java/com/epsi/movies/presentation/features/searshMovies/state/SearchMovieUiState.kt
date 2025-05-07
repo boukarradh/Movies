@@ -11,4 +11,5 @@ sealed interface SearchMovieUiState {
     data class Success(val movies: List<MovieUiModel>) : SearchMovieUiState // État de succès avec la liste des films
     data object Empty : SearchMovieUiState // État vide (aucun film trouvé)
     data class Error(val message: String) : SearchMovieUiState // État d'erreur
+    data object Nothing : SearchMovieUiState // Page initiale
 }

@@ -41,7 +41,7 @@ class FavoriteMoviesViewModel @Inject constructor(
     private fun observeFavoritMoviesFromDatabase() {
         viewModelScope.launch {
             _uiState.value = MoviesListUiState.Loading
-            delay(2000) // Simule un délai de 2000seconds (2 minutes) pour la démonstration
+            delay(500) // Simule un délai de 2000seconds (2 minutes) pour la démonstration
             favoriteMoviesFlow() // Appelle la fonction du repo qui retourne Flow<List<MovieUiModel>>
                 .catch { exception ->
                     // Gère les erreurs potentielles lors de la collecte du Flow de la DB

@@ -26,7 +26,7 @@ interface UserDao {
      * @param user L'entité UserEntity à insérer.
      * @return L'ID (rowId) de l'utilisateur nouvellement inséré, ou -1 en cas d'échec/conflit.
      */
-    @Insert(onConflict = OnConflictStrategy.ABORT)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertUser(user: UserEntity): Long // Retourne Long pour l'ID généré
 
     /**

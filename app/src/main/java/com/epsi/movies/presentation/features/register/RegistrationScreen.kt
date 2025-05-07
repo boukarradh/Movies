@@ -16,6 +16,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -129,12 +130,20 @@ fun RegistrationScreen(
                     .fillMaxWidth()
                     .height(48.dp),
                 onClick = {
-                    registerViewModel.saveUser(userName = username, password = password)
+                    registerViewModel.saveUser(userName = username, password = password, onRegisterSuccess =  onRegisterSuccess)
                 },
                 enabled = (username.isNotBlank() && password.isNotBlank() && confirmPassword.isNotBlank()) && (password == confirmPassword),
                 text = "S'inscrire"
             )
 
+            TextButton(onClick = { onRegisterSuccess() }) {
+                Text(
+                    text = "Login",
+                    style = MaterialTheme.typography.bodyMedium,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(horizontal = 16.dp)
+                )
+            }
 
             Spacer(modifier = Modifier.height(24.dp))
 

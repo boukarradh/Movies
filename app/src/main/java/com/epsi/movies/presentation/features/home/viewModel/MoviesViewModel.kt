@@ -44,7 +44,7 @@ class MoviesViewModel @Inject constructor( // Injection du Repository via le con
     private fun observeMoviesFromDatabase() {
         viewModelScope.launch {
             _uiState.value = MoviesListUiState.Loading
-            delay(2000) // Simule un délai de 500ms pour la démonstration
+            delay(500) // Simule un délai de 500ms pour la démonstration
             moviesFlow() // Appelle la fonction du repo qui retourne Flow<List<MovieUiModel>>
                 .catch { exception ->
                     // Gère les erreurs potentielles lors de la collecte du Flow de la DB

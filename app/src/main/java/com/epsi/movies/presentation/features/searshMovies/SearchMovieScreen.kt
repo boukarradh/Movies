@@ -21,6 +21,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.epsi.movies.presentation.features.searshMovies.state.SearchMovieUiState
 import com.epsi.movies.presentation.features.searshMovies.viewModel.SearchMovieViewModel
 import com.epsi.movies.presentation.ui.designsystem.MovieCard
+import com.epsi.movies.presentation.ui.designsystem.MoviesAlertDialog
 import com.epsi.movies.presentation.ui.theme.MoviesTheme
 
 
@@ -82,7 +83,7 @@ fun SearchMovieScreen(
                     if (searchQuery.isNotEmpty()) {
                         IconButton(onClick = {
                             searchQuery = ""
-                             viewModel.resetSearchState()
+                            viewModel.resetSearchState()
                         }) {
                             Icon(Icons.Filled.Clear, contentDescription = "Effacer la recherche")
                         }
@@ -115,19 +116,24 @@ fun SearchMovieScreen(
                 is SearchMovieUiState.Loading -> {
                     CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
                 }
+
                 is SearchMovieUiState.Empty -> {
-                    Text(
-                        text = "Aucun résultat trouvé pour \"$searchQuery\"",
-                        modifier = Modifier.align(Alignment.Center)
-                    )
+                    //TODO("Ajouter un popup d'erreur")
                 }
+
                 is SearchMovieUiState.Error -> {
-                    Text(
-                        text = state.message,
-                        color = MaterialTheme.colorScheme.error,
-                        modifier = Modifier.align(Alignment.Center)
-                    )
+                    MoviesAlertDialog(
+                        title = state.message,
+                        onConfirm = {
+                            viewModel.resetSearchState()
+                            searchQuery = ""
+                        },
+                        onDismiss = {
+                            viewModel.resetSearchState()
+                            searchQuery = ""
+                        })
                 }
+
                 is SearchMovieUiState.Success -> {
                     // Affiche la liste des résultats si l'état est Success
                     LazyColumn(
@@ -150,12 +156,14 @@ fun SearchMovieScreen(
                                     onMovieClick(movieIdValue.toString())
                                 },
                                 onFavoriteClick = { movieIdValue ->
-                             viewModel.addMovieToFavorites(movieIdValue)
+                                    viewModel.addMovieToFavorites(movieIdValue)
                                 }
                             )
                         }
                     }
                 }
+
+                else -> Unit
             }
         }
     }
